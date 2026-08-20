@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="th">
 <head>
 <meta charset="UTF-8">
@@ -705,8 +705,8 @@
       </div>
     </div>
     <div class="form-group">
-      <label>ชื่อ-นามสกุล (พร้อมคำนำหน้า) <span class="req">*</span></label>
-      <input type="text" id="mName" placeholder="เช่น นายสมชาย ใจดี">
+      <label>ชื่อ (พร้อมคำนำหน้า) <span class="req">*</span></label>
+      <input type="text" id="mName" placeholder="เช่น นายสมชาย">
     </div>
     <div class="form-group">
       <label>แผนกวิชา</label>
@@ -714,8 +714,8 @@
     </div>
     <div class="admin-form-row">
       <div class="form-group">
-        <label>สถานที่ทำงาน</label>
-        <input type="text" id="mWorkplace" placeholder="-">
+        <label>นามสกุล <span class="req">*</span></label>
+        <input type="text" id="mWorkplace" placeholder="เช่น ใจดี">
       </div>
       <div class="form-group">
         <label>จังหวัด</label>
@@ -977,7 +977,7 @@ function filterAlumni() {
   const batch = document.getElementById('searchBatch').value;
   const dept = document.getElementById('searchDept').value;
   let filtered = mockAlumni.filter(a => {
-    const nm = a.name.toLowerCase().includes(name);
+    const nm = (a.name + " " + a.workplace).toLowerCase().includes(name);
     const bt = !batch || a.batch == batch;
     const dp = !dept || a.dept === dept;
     return nm && bt && dp;
@@ -992,7 +992,7 @@ function renderAlumni(data) {
     <tr>
       <td>${i+1}</td>
       <td style="font-size:13px; color:var(--gray-500);">${a.id}</td>
-      <td><strong>${a.name}</strong></td>
+      <td><strong>${a.name} ${a.workplace && a.workplace !== "-" ? a.workplace : ""}</strong></td>
       <td><span class="dept-tag">${a.group}</span></td>
       <td><span class="dept-tag">${a.dept}</span></td>
       <td><span class="status-badge status-approved">สมาชิก</span></td>
@@ -1007,7 +1007,7 @@ function renderAlumni(data) {
       <tr>
         <td>${i+1}</td>
         <td style="font-size:13px; color:var(--gray-500);">${a.id}</td>
-        <td><strong>${a.name}</strong></td>
+        <td><strong>${a.name} ${a.workplace && a.workplace !== "-" ? a.workplace : ""}</strong></td>
         <td><span class="dept-tag">${a.group}</span></td>
         <td><span class="dept-tag">${a.dept}</span></td>
         <td><span class="status-badge status-approved">สมาชิก</span></td>
@@ -1145,7 +1145,7 @@ function renderDashRecent() {
   document.getElementById('dashRecentBody').innerHTML = mockAlumni.slice(0,5).map(a=>`
     <tr>
       <td style="font-size:13px;color:var(--gray-500);">${a.id}</td>
-      <td><strong>${a.name}</strong></td>
+      <td><strong>${a.name} ${a.workplace && a.workplace !== "-" ? a.workplace : ""}</strong></td>
       <td><span class="dept-tag">${a.group}</span></td>
       <td><span class="dept-tag">${a.dept}</span></td>
     </tr>`).join('');
@@ -1156,7 +1156,7 @@ function renderAdminMembers() {
   const q = (document.getElementById('adminSearchName')||{}).value||'';
   const g = (document.getElementById('adminSearchGroup')||{}).value||'';
   const filtered = mockAlumni.filter(a=>
-    a.name.toLowerCase().includes(q.toLowerCase()) ||
+    (a.name + " " + a.workplace).toLowerCase().includes(q.toLowerCase()) ||
     a.id.includes(q)
   ).filter(a=> !g || a.group===g);
 
@@ -1166,7 +1166,7 @@ function renderAdminMembers() {
     <tr>
       <td>${i+1}</td>
       <td style="font-size:13px;color:var(--gray-500);">${a.id}</td>
-      <td><strong>${a.name}</strong></td>
+      <td><strong>${a.name} ${a.workplace && a.workplace !== "-" ? a.workplace : ""}</strong></td>
       <td><span class="dept-tag">${a.group}</span></td>
       <td><span class="dept-tag">${a.dept}</span></td>
       <td><span class="status-badge status-approved">สมาชิก</span></td>
@@ -1196,9 +1196,9 @@ async function saveMember() {
   const id = document.getElementById('mId').value.trim();
   const name = document.getElementById('mName').value.trim();
   const group = document.getElementById('mGroup').value.trim();
-  const workplace = document.getElementById('mWorkplace').value.trim()||'-';
+  const workplace = document.getElementById('mWorkplace').value.trim();
   const province = document.getElementById('mProvince').value.trim()||'-';
-  if(!id||!name){ alert('กรุณากรอกรหัสนักศึกษาและชื่อ-นามสกุล'); return; }
+  if(!id||!name||!workplace){ alert('กรุณากรอกรหัสนักศึกษา ชื่อ และนามสกุล'); return; }
 
   const editId = document.getElementById('memberEditId').value;
   const memberData = { id, name, group, dept:'เทคโนโลยีธุรกิจดิจิทัล', batch:39, workplace, province };
@@ -1381,3 +1381,4 @@ fetchMembersFromSheets(); // โหลดจาก Google Sheets ทันที
 </script>
 </body>
 </html><!-- Vercel auto-deploy test -->
+
