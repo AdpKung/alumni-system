@@ -326,16 +326,22 @@
     </div>
   </div>
 
-  <!-- Basic Info -->
+  <!-- Recent Members Preview -->
   <div class="section-pad" style="background:var(--white);">
-    <div class="container" style="text-align:center; max-width:800px; margin:0 auto;">
-      <div class="section-title">ข้อมูลเบื้องต้นสมาคม</div>
-      <p style="color:var(--gray-600); line-height:1.8; margin-bottom:24px; font-size:16px;">
-        สมาคมศิษย์เก่าวิทยาลัยเทคนิคประจวบคีรีขันธ์ เป็นศูนย์กลางในการติดต่อสื่อสาร แลกเปลี่ยนประสบการณ์ และช่วยเหลือเกื้อกูลกันระหว่างศิษย์เก่าทุกรุ่น พร้อมทั้งมีส่วนร่วมในการสนับสนุนการศึกษาและพัฒนาวิทยาลัยของเราให้ก้าวหน้าอย่างยั่งยืน
-      </p>
-      <button class="btn-outline" onclick="showPage('about')" style="border-color:var(--orange); color:var(--orange); transition:all .2s;" onmouseover="this.style.background='var(--orange)';this.style.color='#fff'" onmouseout="this.style.background='transparent';this.style.color='var(--orange)'">
-        อ่านประวัติสมาคมเพิ่มเติม →
-      </button>
+    <div class="container">
+      <div class="section-title">รายชื่อศิษย์เก่า</div>
+      <div class="section-sub">ตัวอย่างข้อมูลสมาชิกสมาคม</div>
+      <div style="overflow-x:auto;">
+        <table class="results-table">
+          <thead>
+            <tr><th>#</th><th>รหัสนักศึกษา</th><th>ชื่อ-นามสกุล</th><th>กลุ่ม</th><th>แผนกวิชา</th><th>สถานะ</th></tr>
+          </thead>
+          <tbody id="homeMembersBody"></tbody>
+        </table>
+      </div>
+      <div style="text-align:center; margin-top:20px;">
+        <button class="submit-btn" style="width:auto; padding:10px 24px;" onclick="showPage('search')">ดูรายชื่อทั้งหมด →</button>
+      </div>
     </div>
   </div>
 
@@ -1019,6 +1025,21 @@ function renderAlumni(data) {
       <td><span class="status-badge status-approved">สมาชิก</span></td>
     </tr>`).join('');
   count.textContent = `แสดงผล ${data.length} รายการ จากทั้งหมด ${mockAlumni.length} รายการ`;
+
+  // Render preview for Home page
+  const homeBody = document.getElementById('homeMembersBody');
+  if (homeBody) {
+    const previewData = data.slice(0, 5); // Show up to 5 members
+    homeBody.innerHTML = previewData.map((a,i) => `
+      <tr>
+        <td>${i+1}</td>
+        <td style="font-size:13px; color:var(--gray-500);">${a.id}</td>
+        <td><strong>${a.name}</strong></td>
+        <td><span class="dept-tag">${a.group}</span></td>
+        <td><span class="dept-tag">${a.dept}</span></td>
+        <td><span class="status-badge status-approved">สมาชิก</span></td>
+      </tr>`).join('');
+  }
 }
 
 // ============ FORM ============
