@@ -1142,7 +1142,6 @@ function renderDashRecent() {
   document.getElementById('adminToday').textContent =
     today.toLocaleDateString('th-TH', {year:'numeric', month:'long', day:'numeric'});
   document.getElementById('statTotal').textContent = mockAlumni.length;
-  document.getElementById('statNews').textContent = mockNews.length;
   document.getElementById('dashRecentBody').innerHTML = mockAlumni.slice(0,5).map(a=>`
     <tr>
       <td style="font-size:13px;color:var(--gray-500);">${a.id}</td>
