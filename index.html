@@ -1171,17 +1171,10 @@ function renderAdminMembers() {
       <td><span class="dept-tag">${a.dept}</span></td>
       <td><span class="status-badge status-approved">สมาชิก</span></td>
       <td style="display:flex;gap:6px;flex-wrap:wrap;">
-        <button class="action-btn mem-edit-btn" data-id="${a.id}" style="background:#DBEAFE;color:#1e40af;">✏️ แก้ไข</button>
-        <button class="action-btn action-reject mem-del-btn" data-id="${a.id}">🗑️ ลบ</button>
+        <button class="action-btn mem-edit-btn" onclick="editMember('${a.id}')" style="background:#DBEAFE;color:#1e40af;cursor:pointer;">✏️ แก้ไข</button>
+        <button class="action-btn action-reject mem-del-btn" onclick="deleteMember('${a.id}')" style="cursor:pointer;">🗑️ ลบ</button>
       </td>
     </tr>`).join('') || '<tr><td colspan="7" style="text-align:center;color:var(--gray-500);padding:24px;">ไม่พบข้อมูล</td></tr>';
-
-  tbody.querySelectorAll('.mem-edit-btn').forEach(btn => {
-    btn.addEventListener('click', () => editMember(btn.dataset.id));
-  });
-  tbody.querySelectorAll('.mem-del-btn').forEach(btn => {
-    btn.addEventListener('click', () => deleteMember(btn.dataset.id));
-  });
 }
 
 function openMemberModal(editData=null) {
@@ -1223,12 +1216,12 @@ async function saveMember() {
 }
 
 function editMember(id) {
-  const m = mockAlumni.find(a=>a.id===id);
+  const m = mockAlumni.find(a=>String(a.id)===String(id));
   if(m) openMemberModal(m);
 }
 
 async function deleteMember(id) {
-  const m = mockAlumni.find(a=>a.id===id);
+  const m = mockAlumni.find(a=>String(a.id)===String(id));
   if(!m) return;
   if(confirm(`ยืนยันการลบ "${m.name}" ออกจากระบบและ Google Sheets?`)) {
     await apiDeleteMember(id);
