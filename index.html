@@ -876,7 +876,6 @@ function hideLoadingOverlay() {
 // ดึงข้อมูลสมาชิกจาก Google Sheets
 async function fetchMembersFromSheets() {
   try {
-    showLoadingOverlay('กำลังโหลดข้อมูลจาก Google Sheets...');
     const res = await fetch(`${SCRIPT_URL}?action=getMembers`);
     const json = await res.json();
     if(json.status === 'ok' && json.data.length > 0) {
@@ -894,7 +893,6 @@ async function fetchMembersFromSheets() {
   } catch(e) {
     console.warn('ไม่สามารถเชื่อม Google Sheets ได้ ใช้ข้อมูลในเครื่องแทน', e);
   } finally {
-    hideLoadingOverlay();
     renderAlumni(mockAlumni);
     renderAdminMembers();
     renderDashRecent();
