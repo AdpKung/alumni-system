@@ -350,8 +350,8 @@
     <div class="container">
       <div class="section-title" style="text-align:center;">สมาชิกแยกตามแผนกวิชา</div>
       <div class="section-sub" style="text-align:center;">ข้อมูล ณ มิถุนายน 2568</div>
-      <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:20px;">
-        <div class="stat-card" style="text-align:center; min-width:220px; max-width:260px; flex:1;"><div class="num accent">27</div><div class="lbl">แผนกเทคโนโลยีธุรกิจดิจิทัล</div></div>
+      <div id="deptStatsContainer" style="display:flex; flex-wrap:wrap; justify-content:center; gap:20px;">
+        <!-- Data will be populated by JS -->
       </div>
     </div>
   </div>
@@ -909,6 +909,25 @@ function updateStatTotal() {
   const strips = document.querySelectorAll('.stat-num');
   if(strips[0]) strips[0].textContent = mockAlumni.length;
   if(strips[3]) strips[3].textContent = mockAlumni.length;
+
+  // จัดกลุ่มและนับจำนวนสมาชิกแต่ละแผนก
+  const deptCounts = {};
+  mockAlumni.forEach(a => {
+    const dept = a.dept || 'ไม่ระบุแผนก';
+    deptCounts[dept] = (deptCounts[dept] || 0) + 1;
+  });
+
+  // สร้าง Card ของแต่ละแผนก
+  const deptContainer = document.getElementById('deptStatsContainer');
+  if(deptContainer) {
+    const html = Object.keys(deptCounts).map(dept => `
+      <div class="stat-card" style="text-align:center; min-width:220px; max-width:260px; flex:1;">
+        <div class="num accent">${deptCounts[dept]}</div>
+        <div class="lbl">${dept}</div>
+      </div>
+    `).join('');
+    deptContainer.innerHTML = html || '<div style="color:var(--gray-500); text-align:center; width:100%;">ยังไม่มีข้อมูลสมาชิก</div>';
+  }
 }
 
 // เพิ่มสมาชิกไป Sheets
