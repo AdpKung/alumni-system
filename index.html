@@ -604,9 +604,7 @@
       <div class="admin-nav-item" onclick="switchAdminPanel(this,'panelMembers')">
         <span class="admin-nav-icon">👥</span> จัดการสมาชิก
       </div>
-      <div class="admin-nav-item" onclick="switchAdminPanel(this,'panelNews')">
-        <span class="admin-nav-icon">📢</span> จัดการข่าวสาร
-      </div>
+
       <div class="admin-nav-section">ระบบ</div>
       <div class="admin-nav-item" onclick="showPage('home')">
         <span class="admin-nav-icon">🏠</span> กลับหน้าเว็บ
@@ -630,7 +628,7 @@
       </div>
       <div class="admin-stats">
         <div class="admin-stat"><div class="n" id="statTotal">27</div><div class="l">สมาชิกทั้งหมด</div></div>
-        <div class="admin-stat"><div class="n" id="statNews">6</div><div class="l">ข่าวสาร/กิจกรรม</div></div>
+
         <div class="admin-stat"><div class="n">1</div><div class="l">แผนกวิชา</div></div>
         <div class="admin-stat"><div class="n">39</div><div class="l">รุ่นล่าสุด</div></div>
       </div>
@@ -685,61 +683,7 @@
       </div>
     </div>
 
-    <!-- NEWS PANEL -->
-    <div id="panelNews" style="display:none;">
-      <div class="admin-topbar">
-        <div>
-          <div class="admin-page-title">จัดการข่าวสาร/กิจกรรม</div>
-          <div class="admin-page-sub">เพิ่ม แก้ไข หรือลบข่าวสารที่แสดงในเว็บไซต์</div>
-        </div>
-        <button class="btn-primary" style="font-size:13px;padding:9px 20px;" onclick="showNewsForm(null)">+ เพิ่มข่าวสาร</button>
-      </div>
 
-      <!-- Add/Edit form -->
-      <div id="newsFormCard" class="admin-card" style="display:none; margin-bottom:20px;">
-        <div class="admin-card-header">
-          <div class="admin-card-title" id="newsFormTitle">➕ เพิ่มข่าวสาร/กิจกรรม</div>
-          <button onclick="hideNewsForm()" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--gray-500);">×</button>
-        </div>
-        <div class="admin-card-body">
-          <input type="hidden" id="newsEditId">
-          <div class="admin-form-row">
-            <div class="form-group">
-              <label>หัวข้อข่าว <span class="req">*</span></label>
-              <input type="text" id="newsTitle" placeholder="หัวข้อข่าวสาร">
-            </div>
-            <div class="form-group">
-              <label>ประเภท <span class="req">*</span></label>
-              <select id="newsType">
-                <option>กิจกรรม</option><option>วิชาการ</option><option>ประชาสัมพันธ์</option>
-                <option>ทุนการศึกษา</option><option>ความสำเร็จ</option><option>ระบบ</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-group">
-            <label>วันที่</label>
-            <input type="text" id="newsDate" placeholder="เช่น มิ.ย. 68">
-          </div>
-          <div class="form-group">
-            <label>เนื้อหา/รายละเอียด <span class="req">*</span></label>
-            <textarea id="newsContent" placeholder="รายละเอียดข่าวสาร..." style="min-height:100px;"></textarea>
-          </div>
-          <div style="display:flex; gap:10px;">
-            <button class="submit-btn" style="max-width:160px;" onclick="saveNews()">💾 บันทึก</button>
-            <button onclick="hideNewsForm()" style="padding:12px 24px; border:1.5px solid var(--gray-300); border-radius:30px; background:#fff; font-size:14px; cursor:pointer;">ยกเลิก</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- News list -->
-      <div class="admin-card">
-        <div class="admin-card-header">
-          <div class="admin-card-title">ข่าวสารทั้งหมด</div>
-          <span id="newsCount" style="font-size:13px; color:var(--gray-500);"></span>
-        </div>
-        <div class="admin-card-body" id="newsListBody"></div>
-      </div>
-    </div>
 
   </div><!-- end admin-main -->
 </div><!-- end admin-wrap -->
@@ -1180,14 +1124,13 @@ let mockNews = [
 let newsIdCounter = 7;
 
 function switchAdminPanel(el, panelId) {
-  ['panelDashboard','panelMembers','panelNews'].forEach(id=>{
+  ['panelDashboard','panelMembers'].forEach(id=>{
     document.getElementById(id).style.display='none';
   });
   document.getElementById(panelId).style.display='block';
   document.querySelectorAll('.admin-nav-item').forEach(e=>e.classList.remove('active'));
   if(el) el.classList.add('active');
   if(panelId==='panelMembers') renderAdminMembers();
-  if(panelId==='panelNews') renderNewsList();
   if(panelId==='panelDashboard') renderDashRecent();
 }
 
